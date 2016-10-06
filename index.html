@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>EDicts</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <style>
+        .row {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row" id="top1">
+        <div class="col-md-12">
+            <div class="input-group">
+                <input type="text" id="word" class="form-control" aria-label="...">
+                <div class="input-group-btn">
+                    <button class="btn" id="update">GO!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="top2">
+        <div class="col-md-12">
+            <div class="btn-group" id="switchButtons" role="group" aria-label="...">
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <iframe src="" width="100%" height="0" align="left"></iframe>
+        </div>
+    </div>
+
+    <script>
+
+        let sites = {
+            "Collins": "https://www.collinsdictionary.com/dictionary/english/%%%",
+            "M&W": "http://www.merriam-webster.com/dictionary/%%%",
+            "Lingvo": "https://www.lingvolive.com/ru-ru/translate/en-ru/%%%",
+            "Forvo": "http://ru.forvo.com/search/%%%/en",
+        };
+        let sitesKeys = Object.keys(sites)
+        let currSite = sitesKeys[0]
+        let currWord = $("#word").val()
+
+        function updateIFrame() {
+            let link = sites[currSite].replace("%%%", currWord)
+            $("iframe").attr("src", link)
+        }
+
+        sitesKeys.forEach(function(key){
+            $("#switchButtons").append(`<button id="${key}" class="btn btn-info btnLink">${key}</button>`)
+        })
+
+        let iframeHeight = window.innerHeight - $("#top1").height() - $("#top2").height();
+        $("iframe").attr("height", iframeHeight)
+
+        $( document ).ready(function() {
+            updateIFrame()
+        
+            $("#update").click(function(){
+                currWord = $("#word").val();
+                updateIFrame();
+            })
+
+            $(".btnLink").click(function(){
+                currSite = $(this).attr("id");
+                updateIFrame();
+            })
+
+        });
+
+    </script>
+
+</body>
+
+</html>
